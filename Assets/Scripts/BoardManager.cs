@@ -1,31 +1,79 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BoardManager : MonoBehaviour {
-
+public class BoardManager : MonoBehaviour
+{
     public GameObject _Anchor;
     public GameObject _BinPrefab;
     public float _DeltaX;
     public float _DeltaY;
+
+    public float _BombSpawnTimer = 3f;
 
     GameObject[,] _board;
 
     // Use this for initialization
     void Start()
     {
+        CreateBins();
+        StartCoroutine("BombSpawner");
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        RaycastHit2D _hit = new RaycastHit2D();
+        if (Input.touchCount > 0)
+        {
+            _hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position), Vector3.forward, 100f);
+            Debug.DrawRay(Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position), Vector3.forward);
+        }
+        else
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                _hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.forward, 100f);
+                Debug.DrawRay(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.forward);
+            }
+        }
+
+        if (_hit.collider)
+        {
+            _hit.collider.GetComponent<BinManager>().Bin_Onclick();
+        }
+    }
+
+    void CreateBins()
+    {
         _board = new GameObject[4, 4];
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
             {
-                Instantiate(_BinPrefab, _Anchor.transform.position + new Vector3(i * _DeltaX, j * _DeltaY, 0), Quaternion.identity);
+                _board[i, j] = (GameObject)Instantiate(_BinPrefab, _Anchor.transform.position + new Vector3(i * _DeltaX, j * _DeltaY, 0), Quaternion.identity);
+                //_board[i, j].AddComponent(typeof(CircleCollider2D));
+
             }
         }
-
     }
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
+    IEnumerator BombSpawner()
+    {
+        while (true)
+        {
+            while (true)
+            {
+                int xBin = Random.Range(0, 3);
+                int yBin = Random.Range(0, 3);
+                BinManager selectedBin = _board[xBin, yBin].GetComponent<BinManager>();
+                if (selectedBin.IsEmpty)
+                {
+                    selectedBin.CreateBomb();
+                    break;
+                }
+                yield return new WaitForEndOfFrame();
+            }
+            yield return new WaitForSeconds(_BombSpawnTimer);
+        }
+    }
 }
