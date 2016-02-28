@@ -10,7 +10,19 @@ public class BoardManager : MonoBehaviour
 
     public float _BombSpawnTimer = 3f;
 
+
+    ArrayList _freeBins;
     GameObject[,] _board;
+
+    void Awake()
+    {
+        EventBus.BinCleared.AddListener(BinCleared);
+    }
+
+    void BinCleared(GameObject clearedBin)
+    {
+        _freeBins.Add(clearedBin);
+    }
 
     // Use this for initialization
     void Start()
@@ -45,12 +57,14 @@ public class BoardManager : MonoBehaviour
 
     void CreateBins()
     {
+        _freeBins = new ArrayList();
         _board = new GameObject[4, 4];
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
             {
                 _board[i, j] = (GameObject)Instantiate(_BinPrefab, _Anchor.transform.position + new Vector3(i * _DeltaX, j * _DeltaY, 0), Quaternion.identity);
+                _freeBins[i * 4 + j] = _board[i, j];
                 //_board[i, j].AddComponent(typeof(CircleCollider2D));
 
             }
@@ -61,6 +75,8 @@ public class BoardManager : MonoBehaviour
     {
         while (true)
         {
+            //if ()
+            int randomBinIndex = Random.Range(0, _freeBins.Count);
             while (true)
             {
                 int xBin = Random.Range(0, 3);
