@@ -13,6 +13,7 @@ public class BinManager : MonoBehaviour
     private GameObject _binBomb;
     private Hashtable _bombsTypeHash;
     private bool _empty = true;
+    private bool _destroySequenceActive = false;
     public bool IsEmpty
     {
         get
@@ -36,7 +37,7 @@ public class BinManager : MonoBehaviour
 
     public void CreateBomb()
     {
-        int randomBombType = Random.Range(0, sizeof(BombType)*1000 )%3;
+        int randomBombType = Random.Range(0, sizeof(BombType) * 1000) % 3;
         CreateBombByType((BombType)randomBombType);
         _empty = false;
     }
@@ -51,8 +52,24 @@ public class BinManager : MonoBehaviour
     {
         if (!_empty)
         {
+            BombDestroySequence();
 
         }
+    }
+
+    void BombDestroySequence()
+    {
+        GameObject bombDestroyAnimation = _binBomb.GetComponent<BombManager>()._BombDestroyAnimation;
+
+        if (bombDestroyAnimation)
+        {
+            Instantiate(bombDestroyAnimation, _binBomb.transform.position, Quaternion.identity);
+        }
+
+        Destroy(_binBomb);
+        _empty = true;
+        EventBus.BinCleared.Dispatch(gameObject);
+
     }
 
 }

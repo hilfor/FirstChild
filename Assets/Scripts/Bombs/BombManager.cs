@@ -20,6 +20,7 @@ public abstract class BombManager : MonoBehaviour
     public BombType _BombType;
     public BombStatus _BombStatus;
     public GameObject _BombPrefab;
+    public GameObject _BombDestroyAnimation;
 
     protected GameObject _bombObject;
 

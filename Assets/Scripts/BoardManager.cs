@@ -64,7 +64,7 @@ public class BoardManager : MonoBehaviour
             for (int j = 0; j < 4; j++)
             {
                 _board[i, j] = (GameObject)Instantiate(_BinPrefab, _Anchor.transform.position + new Vector3(i * _DeltaX, j * _DeltaY, 0), Quaternion.identity);
-                _freeBins[i * 4 + j] = _board[i, j];
+                _freeBins.Add(_board[i, j]);
                 //_board[i, j].AddComponent(typeof(CircleCollider2D));
 
             }
@@ -75,20 +75,14 @@ public class BoardManager : MonoBehaviour
     {
         while (true)
         {
-            //if ()
-            int randomBinIndex = Random.Range(0, _freeBins.Count);
-            while (true)
+            if (_freeBins.Count > 0)
             {
-                int xBin = Random.Range(0, 3);
-                int yBin = Random.Range(0, 3);
-                BinManager selectedBin = _board[xBin, yBin].GetComponent<BinManager>();
-                if (selectedBin.IsEmpty)
-                {
-                    selectedBin.CreateBomb();
-                    break;
-                }
-                yield return new WaitForEndOfFrame();
+                int randomBinIndex = Random.Range(0, _freeBins.Count);
+                GameObject randomBinObject = (GameObject)_freeBins[randomBinIndex];
+                BinManager randomBinManager = randomBinObject.GetComponent<BinManager>();
+                randomBinManager.CreateBomb();
             }
+
             yield return new WaitForSeconds(_BombSpawnTimer);
         }
     }
