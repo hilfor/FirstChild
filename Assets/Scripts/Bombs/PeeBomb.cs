@@ -4,23 +4,29 @@ using System;
 
 public class PeeBomb : BombManager
 {
-    public override void ExplodeBomb()
+    public override void DeployBombExplosion()
     {
-        throw new NotImplementedException();
+        if (_BombDestroyAnimation)
+            Instantiate(_BombDestroyAnimation, transform.position, Quaternion.identity);
     }
 
     public override BombType GetBombType()
     {
-        throw new NotImplementedException();
+        return BombType.PEE;
     }
 
     public override void HideBomb()
     {
-        throw new NotImplementedException();
+        Destroy(gameObject);
     }
 
     public override void ShowBomb()
     {
         throw new NotImplementedException();
+    }
+
+    public override void UpdateScore(ScoreManager scoreManager)
+    {
+        scoreManager.UpdateScore(_Score);
     }
 }

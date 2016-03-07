@@ -8,6 +8,7 @@ public class BinManager : MonoBehaviour
     public GameObject _PeeBomb;
     public GameObject _PoopBomb;
     public GameObject _BabyBomb;
+    public ScoreManager _ScoreManager;
 
 
     private GameObject _binBomb;
@@ -59,14 +60,17 @@ public class BinManager : MonoBehaviour
 
     void BombDestroySequence()
     {
-        GameObject bombDestroyAnimation = _binBomb.GetComponent<BombManager>()._BombDestroyAnimation;
+        BombManager bombManager = _binBomb.GetComponent<BombManager>();
+        bombManager.Bomb_OnClick(_ScoreManager);
 
-        if (bombDestroyAnimation)
-        {
-            Instantiate(bombDestroyAnimation, _binBomb.transform.position, Quaternion.identity);
-        }
+        //GameObject bombDestroyAnimation = _binBomb.GetComponent<BombManager>()._BombDestroyAnimation;
 
-        Destroy(_binBomb);
+        //if (bombDestroyAnimation)
+        //{
+        //    Instantiate(bombDestroyAnimation, _binBomb.transform.position, Quaternion.identity);
+        //}
+
+        //Destroy(_binBomb);
         _empty = true;
         EventBus.BinCleared.Dispatch(gameObject);
 

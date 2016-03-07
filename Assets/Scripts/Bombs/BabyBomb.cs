@@ -4,19 +4,27 @@ using System;
 
 public class BabyBomb : BombManager
 {
-    public override void ExplodeBomb()
+
+
+    public override void DeployBombExplosion()
     {
-        throw new NotImplementedException();
+        if (_BombDestroyAnimation)
+            Instantiate(_BombDestroyAnimation, transform.position, Quaternion.identity);
     }
 
     public override BombType GetBombType()
     {
-        throw new NotImplementedException();
+        return BombType.BABY;
     }
 
     public override void HideBomb()
     {
-        throw new NotImplementedException();
+        Destroy(gameObject);
+    }
+
+    public override void OnBombTimerDone()
+    {
+        
     }
 
     public override void ShowBomb()
@@ -24,4 +32,8 @@ public class BabyBomb : BombManager
         throw new NotImplementedException();
     }
 
+    public override void UpdateScore(ScoreManager scoreManager)
+    {
+        scoreManager.UpdateScore(_Score);
+    }
 }

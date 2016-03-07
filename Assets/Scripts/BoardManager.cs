@@ -5,6 +5,7 @@ public class BoardManager : MonoBehaviour
 {
     public GameObject _Anchor;
     public GameObject _BinPrefab;
+    public ScoreManager _ScoreManager;
     public float _DeltaX;
     public float _DeltaY;
 
@@ -65,10 +66,14 @@ public class BoardManager : MonoBehaviour
             {
                 _board[i, j] = (GameObject)Instantiate(_BinPrefab, _Anchor.transform.position + new Vector3(i * _DeltaX, j * _DeltaY, 0), Quaternion.identity);
                 _freeBins.Add(_board[i, j]);
-                //_board[i, j].AddComponent(typeof(CircleCollider2D));
-
+                SetBinMembers(_board[i, j].GetComponent<BinManager>());
             }
         }
+    }
+
+    void SetBinMembers(BinManager bin)
+    {
+        bin._ScoreManager = _ScoreManager;
     }
 
     IEnumerator BombSpawner()
