@@ -5,16 +5,20 @@ using System.Collections;
 public class LifeManager : MonoBehaviour
 {
 
-    public GameObject _LifePrefab;
+    //public GameObject _LifePrefab;
+    //[Header("Done set the above prefab")]
+    public GameObject _LifeObject;
+
     public int _MaxLife = 3;
 
+    private bool _hidden = false;
 
-
-    private int _CurrentLife;
+    private Text _lifeText;
+    private int _currentLife;
 
     public void DecreaseLife()
     {
-        _CurrentLife -= 1;
+        _currentLife -= 1;
     }
 
     void Awake()
@@ -24,11 +28,19 @@ public class LifeManager : MonoBehaviour
         EventBus.GameOver.AddListener(GameOver);
     }
 
+    void Start()
+    {
+        _lifeText = _LifeObject.GetComponent<Text>();
+        GameStarted();
+    }
+
     void FixedUpdate()
     {
-        if (_CurrentLife == 0)
+        if (!_hidden)
         {
-            EventBus.GameOver.Dispatch();
+            _lifeText.text = _currentLife.ToString();
+            if (_currentLife == 0)
+                EventBus.GameOver.Dispatch();
         }
     }
 
@@ -39,22 +51,29 @@ public class LifeManager : MonoBehaviour
 
     void GamePaused()
     {
-
+        HideObjects();
     }
 
     void GameStarted()
     {
-        _CurrentLife = _MaxLife;
+        _currentLife = _MaxLife;
+        _hidden = false;
+        DisplayObjects();
     }
 
     void GameOver()
     {
-
+        HideObjects();
     }
 
     void HideObjects()
     {
+        _LifeObject.SetActive(false);
+    }
 
+    void DisplayObjects()
+    {
+        _LifeObject.SetActive(true);
     }
 
 }

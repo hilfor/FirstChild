@@ -8,13 +8,19 @@ public class ScoreManager : MonoBehaviour
     public int _CurrentScore = 0;
 
     private Text _Text;
-    private bool _Hidden = true;
+    private bool _Hidden = false;
 
     void Awake()
     {
         EventBus.GameUnPaused.AddListener(GameUnPaused);
         EventBus.GamePaused.AddListener(GamePaused);
         EventBus.GameStarted.AddListener(GameStarted);
+    }
+
+    void Start()
+    {
+        _Text = _TextObject.GetComponent<Text>();
+        GameStarted();
     }
 
     void GameOver()

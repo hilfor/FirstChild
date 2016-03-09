@@ -20,7 +20,7 @@ public abstract class BombManager : MonoBehaviour
 {
     public BombType _BombType;
     public BombStatus _BombStatus;
-    public GameObject _BombPrefab;
+    //public GameObject _BombPrefab;
     public GameObject _BombDestroyAnimation;
     public ScoreManager _ScoreManager;
     public int _Score;
@@ -69,9 +69,9 @@ public abstract class BombManager : MonoBehaviour
     public void Bomb_OnClick()
     {
         Debug.Log("bomb clicked");
-        UpdateScore(_Score);
-        DeployBombExplosion();
         HideBomb();
+        DeployBombExplosion();
+        UpdateScore(_Score);
     }
 
     IEnumerator BombTimer()
