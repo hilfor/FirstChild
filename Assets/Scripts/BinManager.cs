@@ -46,6 +46,7 @@ public class BinManager : MonoBehaviour
     void CreateBombByType(BombType bombType)
     {
         _binBomb = (GameObject)Instantiate((GameObject)_bombsTypeHash[bombType], transform.position, Quaternion.identity);
+        _binBomb.GetComponent<BombManager>()._ScoreManager = _ScoreManager;
     }
 
 
@@ -54,14 +55,13 @@ public class BinManager : MonoBehaviour
         if (!_empty)
         {
             BombDestroySequence();
-
         }
     }
 
     void BombDestroySequence()
     {
         BombManager bombManager = _binBomb.GetComponent<BombManager>();
-        bombManager.Bomb_OnClick(_ScoreManager);
+        bombManager.Bomb_OnClick();
 
         //GameObject bombDestroyAnimation = _binBomb.GetComponent<BombManager>()._BombDestroyAnimation;
 

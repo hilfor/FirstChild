@@ -4,20 +4,9 @@ using System;
 
 public class PeeBomb : BombManager
 {
-    public override void DeployBombExplosion()
-    {
-        if (_BombDestroyAnimation)
-            Instantiate(_BombDestroyAnimation, transform.position, Quaternion.identity);
-    }
-
     public override BombType GetBombType()
     {
         return BombType.PEE;
-    }
-
-    public override void HideBomb()
-    {
-        Destroy(gameObject);
     }
 
     public override void ShowBomb()
@@ -25,8 +14,4 @@ public class PeeBomb : BombManager
         throw new NotImplementedException();
     }
 
-    public override void UpdateScore(ScoreManager scoreManager)
-    {
-        scoreManager.UpdateScore(_Score);
-    }
 }
