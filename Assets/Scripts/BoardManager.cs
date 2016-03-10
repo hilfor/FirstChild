@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class BoardManager : MonoBehaviour
+using System.Collections;
+using System;
+
+public class BoardManager : StateObject
 {
     public GameObject _Anchor;
     public GameObject _BinPrefab;
@@ -11,12 +13,16 @@ public class BoardManager : MonoBehaviour
 
     public float _BombSpawnTimer = 3f;
 
+    private bool _levelInProgress = false;
+
+    private State _objectState = State.HIDDEN;
 
     ArrayList _freeBins;
     GameObject[,] _board;
 
-    void Awake()
+    new void Awake()
     {
+        base.Awake();
         EventBus.BinCleared.AddListener(BinCleared);
     }
 
@@ -35,6 +41,9 @@ public class BoardManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (_objectState == State.HIDDEN)
+            return;
+
         RaycastHit2D _hit = new RaycastHit2D();
         if (Input.touchCount > 0)
         {
@@ -78,17 +87,60 @@ public class BoardManager : MonoBehaviour
 
     IEnumerator BombSpawner()
     {
-        while (true)
+        while (_levelInProgress)
         {
-            if (_freeBins.Count > 0)
+            if (_objectState != State.HIDDEN)
             {
-                int randomBinIndex = Random.Range(0, _freeBins.Count);
-                GameObject randomBinObject = (GameObject)_freeBins[randomBinIndex];
-                BinManager randomBinManager = randomBinObject.GetComponent<BinManager>();
-                randomBinManager.CreateBomb();
+                if (_freeBins.Count > 0)
+                {
+                    int randomBinIndex = UnityEngine.Random.Range(0, _freeBins.Count);
+                    GameObject randomBinObject = (GameObject)_freeBins[randomBinIndex];
+                    BinManager randomBinManager = randomBinObject.GetComponent<BinManager>();
+                    randomBinManager.CreateBomb();
+                }
             }
 
             yield return new WaitForSeconds(_BombSpawnTimer);
         }
     }
+
+    public override void GameStarted()
+    {
+        _levelInProgress = true;
+        CreateObjects();
+    }
+
+    public override void GameEnded()
+    {
+        _levelInProgress = false;
+        HideObjects();
+    }
+
+    public override void GamePaused()
+    {
+        HideObjects();
+    }
+
+    public override void GameUnPaused()
+    {
+        throw new NotImplementedException();
+    }
+
+    void HideObjects()
+    {
+        _objectState = State.HIDDEN;
+    }
+
+    void ShowObjects()
+    {
+        _objectState = State.DISPLAYED;
+    }
+
+    void CreateObjects()
+    {
+        _objectState = State.DISPLAYED;
+        CreateBins();
+        StartCoroutine("BombSpawner");
+    }
+
 }
