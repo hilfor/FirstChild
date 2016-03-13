@@ -20,7 +20,7 @@ public class BoardManager : StateObject
     ArrayList _freeBins;
     GameObject[,] _board;
 
-    new void Awake()
+    public override void Awake()
     {
         base.Awake();
         EventBus.BinCleared.AddListener(BinCleared);

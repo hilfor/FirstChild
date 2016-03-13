@@ -12,9 +12,9 @@ public class ScoreManager : MonoBehaviour
 
     void Awake()
     {
-        EventBus.GameUnPaused.AddListener(GameUnPaused);
-        EventBus.GamePaused.AddListener(GamePaused);
-        EventBus.GameStarted.AddListener(GameStarted);
+        EventBus.LevelUnPaused.AddListener(GameUnPaused);
+        EventBus.LevelPaused.AddListener(GamePaused);
+        EventBus.LevelStarted.AddListener(GameStarted);
     }
 
     void Start()

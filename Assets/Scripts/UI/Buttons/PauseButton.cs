@@ -10,14 +10,14 @@ public class PauseButton : MonoBehaviour {
 
     void Awake()
     {
-        EventBus.GameStarted.AddListener(DisplayObject);
-        EventBus.GameUnPaused.AddListener(DisplayObject);
+        EventBus.LevelStarted.AddListener(DisplayObject);
+        EventBus.LevelUnPaused.AddListener(DisplayObject);
     }
 
     public void PauseGame()
     {
         HideObject();
-        EventBus.GamePaused.Dispatch();
+        EventBus.LevelPaused.Dispatch();
     }
 
     void DisplayObject()

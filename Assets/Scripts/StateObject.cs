@@ -10,12 +10,12 @@ public abstract class StateObject : MonoBehaviour
         DISPLAYED
     }
 
-    public void Awake()
+    public virtual void Awake()
     {
         EventBus.GameOver.AddListener(GameEnded);
-        EventBus.GameStarted.AddListener(GameStarted);
-        EventBus.GamePaused.AddListener(GamePaused);
-        EventBus.GameUnPaused.AddListener(GameUnPaused);
+        EventBus.LevelStarted.AddListener(GameStarted);
+        EventBus.LevelPaused.AddListener(GamePaused);
+        EventBus.LevelUnPaused.AddListener(GameUnPaused);
     }
 
     public abstract void GameStarted();

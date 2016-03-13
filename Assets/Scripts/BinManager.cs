@@ -14,7 +14,7 @@ public class BinManager : MonoBehaviour
     private GameObject _binBomb;
     private Hashtable _bombsTypeHash;
     private bool _empty = true;
-    private bool _destroySequenceActive = false;
+    //private bool _destroySequenceActive = false;
     public bool IsEmpty
     {
         get

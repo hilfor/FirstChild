@@ -23,8 +23,8 @@ public class LifeManager : MonoBehaviour
 
     void Awake()
     {
-        EventBus.GameStarted.AddListener(GameStarted);
-        EventBus.GamePaused.AddListener(GamePaused);
+        EventBus.LevelStarted.AddListener(GameStarted);
+        EventBus.LevelPaused.AddListener(GamePaused);
         EventBus.GameOver.AddListener(GameOver);
     }
 
