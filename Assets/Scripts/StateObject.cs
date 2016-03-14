@@ -1,14 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
+public enum State
+{
+    PAUSED,
+    DISPLAYED
+}
 public abstract class StateObject : MonoBehaviour
 {
 
-    public enum State
-    {
-        HIDDEN,
-        DISPLAYED
-    }
+    
 
     public virtual void Awake()
     {

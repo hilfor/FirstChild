@@ -2,10 +2,10 @@
 using System.Collections;
 using System;
 
-public class QuitButton : BaseButton
+public class ContinueButton : BaseButton
 {
     public override void ButtonPressed()
     {
-        Application.Quit();
+        throw new NotImplementedException();
     }
 }

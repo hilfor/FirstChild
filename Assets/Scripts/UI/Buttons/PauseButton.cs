@@ -1,33 +1,41 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System;
 
-public class PauseButton : MonoBehaviour {
+public class PauseButton : BaseButton
+{
 
-
-    public GameObject _ButtonUIObject; 
-
+    public GameObject _ButtonGraphic;
 
     void Awake()
     {
-        EventBus.LevelStarted.AddListener(DisplayObject);
-        EventBus.LevelUnPaused.AddListener(DisplayObject);
+
+        EventBus.LevelPaused.AddListener(LevelPaused);
+        EventBus.LevelUnPaused.AddListener(LevelUnPaused);
+
     }
 
     public void PauseGame()
     {
-        HideObject();
         EventBus.LevelPaused.Dispatch();
     }
 
-    void DisplayObject()
+    void LevelPaused()
     {
-        _ButtonUIObject.SetActive(true);
+        if (_ButtonGraphic)
+            _ButtonGraphic.SetActive(false);
     }
 
-    void HideObject()
+    void LevelUnPaused()
     {
-        _ButtonUIObject.SetActive(false);
+        if (_ButtonGraphic)
+            _ButtonGraphic.SetActive(true);
+    }
 
+    public override void ButtonPressed()
+    {
+        EventBus.LevelPaused.Dispatch();
+        _menu.ChangeMenu(MenuTypes.PAUSE);
     }
 }

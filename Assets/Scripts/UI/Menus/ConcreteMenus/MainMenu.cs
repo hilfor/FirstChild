@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PauseMenu : BaseMenu
+public class MainMenu : BaseMenu
 {
 
     public GameObject _MenuObject;
 
     void Start()
     {
-        _menuType = MenuTypes.PAUSE;
+        _menuType = MenuTypes.MAIN_MENU;
     }
 
     public override void DisplayMenu()

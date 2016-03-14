@@ -3,7 +3,7 @@
 using System.Collections;
 using System;
 
-public class BoardManager : StateObject
+public class BoardManager : MonoBehaviour
 {
     public GameObject _Anchor;
     public GameObject _BinPrefab;
@@ -15,33 +15,66 @@ public class BoardManager : StateObject
 
     private bool _levelInProgress = false;
 
-    private State _objectState = State.HIDDEN;
+    private State _objectState = State.PAUSED;
+    private Coroutine _spawnerCoroutine = null;
 
     ArrayList _freeBins;
     GameObject[,] _board;
 
-    public override void Awake()
+    //public override void Awake()
+    //{
+    //    base.Awake();
+    //    EventBus.BinCleared.AddListener(BinCleared);
+    //    EventBus.LevelStarted.AddListener(LevelStarted);
+    //}
+
+    void Awake()
     {
-        base.Awake();
-        EventBus.BinCleared.AddListener(BinCleared);
+        RegisterHandlers();
     }
 
+    void RegisterHandlers()
+    {
+        EventBus.BinCleared.AddListener(BinCleared);
+        EventBus.LevelStarted.AddListener(LevelStarted);
+        EventBus.LevelPaused.AddListener(LevelPaused);
+        EventBus.LevelUnPaused.AddListener(LevelUnPaused);
+        EventBus.GameOver.AddListener(LevelEnded);
+    }
+    void LevelStarted()
+    {
+        CreateBins();
+        _objectState = State.DISPLAYED;
+        _spawnerCoroutine = StartCoroutine("BombSpawner");
+    }
+
+    void LevelPaused()
+    {
+        _objectState = State.PAUSED;
+    }
+
+    void LevelUnPaused()
+    {
+        _objectState = State.DISPLAYED;
+    }
+
+    void LevelEnded()
+    {
+        if (_spawnerCoroutine != null)
+        {
+            StopCoroutine(_spawnerCoroutine);
+            _spawnerCoroutine = null;
+        }
+    }
     void BinCleared(GameObject clearedBin)
     {
         _freeBins.Add(clearedBin);
     }
 
-    // Use this for initialization
-    void Start()
-    {
-        CreateBins();
-        StartCoroutine("BombSpawner");
-    }
-
     // Update is called once per frame
     void Update()
     {
-        if (_objectState == State.HIDDEN)
+        if (_objectState == State.PAUSED)
             return;
 
         RaycastHit2D _hit = new RaycastHit2D();
@@ -89,7 +122,7 @@ public class BoardManager : StateObject
     {
         while (_levelInProgress)
         {
-            if (_objectState != State.HIDDEN)
+            if (_objectState != State.PAUSED)
             {
                 if (_freeBins.Count > 0)
                 {
@@ -104,43 +137,35 @@ public class BoardManager : StateObject
         }
     }
 
-    public override void GameStarted()
-    {
-        _levelInProgress = true;
-        CreateObjects();
-    }
+    //public override void GameStarted()
+    //{
+    //    _levelInProgress = true;
+    //    CreateObjects();
+    //}
 
-    public override void GameEnded()
-    {
-        _levelInProgress = false;
-        HideObjects();
-    }
+    //public override void GameEnded()
+    //{
+    //    _levelInProgress = false;
+    //    HideObjects();
+    //}
 
-    public override void GamePaused()
-    {
-        HideObjects();
-    }
+    //public override void GamePaused()
+    //{
+    //    HideObjects();
+    //}
 
-    public override void GameUnPaused()
-    {
-        throw new NotImplementedException();
-    }
+    //public override void GameUnPaused()
+    //{
+    //    throw new NotImplementedException();
+    //}
 
-    void HideObjects()
-    {
-        _objectState = State.HIDDEN;
-    }
 
-    void ShowObjects()
-    {
-        _objectState = State.DISPLAYED;
-    }
 
-    void CreateObjects()
-    {
-        _objectState = State.DISPLAYED;
-        CreateBins();
-        StartCoroutine("BombSpawner");
-    }
+    //void CreateObjects()
+    //{
+    //    _objectState = State.DISPLAYED;
+    //    CreateBins();
+    //    StartCoroutine("BombSpawner");
+    //}
 
 }

@@ -13,10 +13,6 @@ public enum MenuTypes
 
 public class MenusController : StateObject
 {
-
-
-
-
     public BaseMenu[] _Menus;
 
     private Hashtable _menusTable;
@@ -64,6 +60,7 @@ public class MenusController : StateObject
         {
             _menusTable.Add(_Menus[i]._menuType, _Menus[i]);
         }
+        ShowMainMenu();
     }
 
     public void ChangeMenu(MenuTypes menuType)
