@@ -11,7 +11,7 @@ public enum MenuTypes
     PAUSE
 }
 
-public class MenusController : StateObject
+public class MenusController : MonoBehaviour
 {
     public BaseMenu[] _Menus;
 
@@ -26,29 +26,11 @@ public class MenusController : StateObject
         _currentDisplayedMenu.DisplayMenu();
     }
 
-    public override void GameEnded()
-    {
-        throw new NotImplementedException();
-    }
+ 
 
-    public override void GamePaused()
+    public void Awake()
     {
-        throw new NotImplementedException();
-    }
-
-    public override void GameStarted()
-    {
-        throw new NotImplementedException();
-    }
-
-    public override void GameUnPaused()
-    {
-        throw new NotImplementedException();
-    }
-
-    public override void Awake()
-    {
-        base.Awake();
+        //base.Awake();
         EventBus.ShowMainMenu.AddListener(ShowMainMenu);
     }
 
@@ -68,7 +50,7 @@ public class MenusController : StateObject
         _currentDisplayedMenu.HideMenu();
         _menusStack.Push(_currentDisplayedMenu);
 
-        _currentDisplayedMenu = (BaseMenu)_menusTable[MenuTypes.MAIN_MENU];
+        _currentDisplayedMenu = (BaseMenu)_menusTable[menuType];
         _currentDisplayedMenu.DisplayMenu();
     }
 
