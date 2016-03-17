@@ -16,6 +16,7 @@ public class MainMenu : BaseMenu
         if (_MenuObject)
         {
             _MenuObject.SetActive(true);
+            EventBus.LevelStarted.Dispatch();
         }
     }
 

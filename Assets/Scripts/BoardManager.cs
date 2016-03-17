@@ -107,6 +107,7 @@ public class BoardManager : MonoBehaviour
             for (int j = 0; j < 4; j++)
             {
                 _board[i, j] = (GameObject)Instantiate(_BinPrefab, _Anchor.transform.position + new Vector3(i * _DeltaX, j * _DeltaY, 0), Quaternion.identity);
+                _board[i, j].transform.parent = _Anchor.transform;
                 _freeBins.Add(_board[i, j]);
                 SetBinMembers(_board[i, j].GetComponent<BinManager>());
             }

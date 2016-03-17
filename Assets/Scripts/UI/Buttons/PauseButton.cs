@@ -23,14 +23,14 @@ public class PauseButton : BaseButton
 
     void LevelPaused()
     {
-        if (_ButtonGraphic)
-            _ButtonGraphic.SetActive(false);
+        //if (_ButtonGraphic)
+        //    _ButtonGraphic.SetActive(false);
     }
 
     void LevelUnPaused()
     {
-        if (_ButtonGraphic)
-            _ButtonGraphic.SetActive(true);
+        //if (_ButtonGraphic)
+        //    _ButtonGraphic.SetActive(true);
     }
 
     public override void ButtonPressed()
