@@ -4,6 +4,7 @@ using System.Collections;
 
 public enum State
 {
+    NEW,
     PAUSED,
     DISPLAYED
 }

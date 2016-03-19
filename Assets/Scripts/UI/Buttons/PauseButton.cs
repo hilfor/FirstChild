@@ -8,34 +8,34 @@ public class PauseButton : BaseButton
 
     public GameObject _ButtonGraphic;
 
-    void Awake()
-    {
+    //void Awake()
+    //{
 
-        EventBus.LevelPaused.AddListener(LevelPaused);
-        EventBus.LevelUnPaused.AddListener(LevelUnPaused);
+    //    EventBus.LevelPaused.AddListener(LevelPaused);
+    //    EventBus.LevelUnPaused.AddListener(LevelUnPaused);
 
-    }
+    //}
 
-    public void PauseGame()
-    {
-        EventBus.LevelPaused.Dispatch();
-    }
+    //public void PauseGame()
+    //{
+    //    EventBus.LevelPaused.Dispatch();
+    //}
 
-    void LevelPaused()
-    {
-        //if (_ButtonGraphic)
-        //    _ButtonGraphic.SetActive(false);
-    }
+    //void LevelPaused()
+    //{
+    //    //if (_ButtonGraphic)
+    //    //    _ButtonGraphic.SetActive(false);
+    //}
 
-    void LevelUnPaused()
-    {
-        //if (_ButtonGraphic)
-        //    _ButtonGraphic.SetActive(true);
-    }
+    //void LevelUnPaused()
+    //{
+    //    //if (_ButtonGraphic)
+    //    //    _ButtonGraphic.SetActive(true);
+    //}
 
     public override void ButtonPressed()
     {
-        EventBus.LevelPaused.Dispatch();
+        //EventBus.LevelPaused.Dispatch();
         _menu.ChangeMenu(MenuTypes.PAUSE);
     }
 }

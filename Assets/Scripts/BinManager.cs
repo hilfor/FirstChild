@@ -46,6 +46,7 @@ public class BinManager : MonoBehaviour
     void CreateBombByType(BombType bombType)
     {
         _binBomb = (GameObject)Instantiate((GameObject)_bombsTypeHash[bombType], transform.position, Quaternion.identity);
+        _binBomb.transform.parent = transform;
         _binBomb.GetComponent<BombManager>()._ScoreManager = _ScoreManager;
     }
 

@@ -4,7 +4,8 @@ using System.Collections;
 public class GameMenu : BaseMenu
 {
 
-    public GameObject _GameObject;
+    public BoardManager _boardManager;
+    public GameObject _UI;
 
     void Start()
     {
@@ -13,18 +14,35 @@ public class GameMenu : BaseMenu
 
     public override void DisplayMenu()
     {
-        if (_GameObject)
+        if (_boardManager)
         {
-            _GameObject.SetActive(true);
-            EventBus.LevelStarted.Dispatch();
+            if (_boardManager._objectState == State.NEW)
+            {
+                EventBus.LevelStarted.Dispatch();
+            }
+            else
+            {
+                EventBus.LevelUnPaused.Dispatch();
+            }
+            _UI.SetActive(true);
+            //_GameObject.SetActive(true);
         }
     }
 
     public override void HideMenu()
     {
-        if (_GameObject)
+        if (_boardManager)
         {
-            _GameObject.SetActive(false);
+            if (_boardManager._objectState == State.DISPLAYED)
+            {
+                EventBus.LevelPaused.Dispatch();
+            }
+            else
+            {
+                EventBus.GameOver.Dispatch();
+            }
+            _UI.SetActive(false);
+            //_GameObject.SetActive(false);
         }
     }
 

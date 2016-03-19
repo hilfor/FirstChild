@@ -11,11 +11,15 @@ public class BoardManager : MonoBehaviour
     public float _DeltaX;
     public float _DeltaY;
 
+    public int _boardSizeX = 3;
+    public int _boardSizeY = 3;
+
     public float _BombSpawnTimer = 3f;
+
+    public State _objectState = State.NEW;
 
     private bool _levelInProgress = false;
 
-    private State _objectState = State.PAUSED;
     private Coroutine _spawnerCoroutine = null;
 
     ArrayList _freeBins;
@@ -43,25 +47,36 @@ public class BoardManager : MonoBehaviour
     }
     void LevelStarted()
     {
-        CreateBins();
+        // init Bins only if this is a new game
+        if (_objectState == State.NEW)
+            CreateBins();
+        _levelInProgress = true;
+
         _objectState = State.DISPLAYED;
         _spawnerCoroutine = StartCoroutine("BombSpawner");
     }
 
     void LevelPaused()
     {
+        // hide bins
+        EnableBins(false);
         _objectState = State.PAUSED;
     }
 
     void LevelUnPaused()
     {
+        // unhide bins
+        EnableBins(true);
         _objectState = State.DISPLAYED;
     }
 
+
     void LevelEnded()
     {
+        // delete bins
         if (_spawnerCoroutine != null)
         {
+            _levelInProgress = false;
             StopCoroutine(_spawnerCoroutine);
             _spawnerCoroutine = null;
         }
@@ -74,7 +89,7 @@ public class BoardManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_objectState == State.PAUSED)
+        if (_objectState != State.DISPLAYED)
             return;
 
         RaycastHit2D _hit = new RaycastHit2D();
@@ -102,9 +117,9 @@ public class BoardManager : MonoBehaviour
     {
         _freeBins = new ArrayList();
         _board = new GameObject[4, 4];
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < _boardSizeX; i++)
         {
-            for (int j = 0; j < 4; j++)
+            for (int j = 0; j < _boardSizeY; j++)
             {
                 _board[i, j] = (GameObject)Instantiate(_BinPrefab, _Anchor.transform.position + new Vector3(i * _DeltaX, j * _DeltaY, 0), Quaternion.identity);
                 _board[i, j].transform.parent = _Anchor.transform;
@@ -138,35 +153,14 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    //public override void GameStarted()
-    //{
-    //    _levelInProgress = true;
-    //    CreateObjects();
-    //}
-
-    //public override void GameEnded()
-    //{
-    //    _levelInProgress = false;
-    //    HideObjects();
-    //}
-
-    //public override void GamePaused()
-    //{
-    //    HideObjects();
-    //}
-
-    //public override void GameUnPaused()
-    //{
-    //    throw new NotImplementedException();
-    //}
-
-
-
-    //void CreateObjects()
-    //{
-    //    _objectState = State.DISPLAYED;
-    //    CreateBins();
-    //    StartCoroutine("BombSpawner");
-    //}
-
+    void EnableBins(bool binsState)
+    {
+        for (int i = 0; i < _boardSizeX; i++)
+        {
+            for (int j = 0; j < _boardSizeY; j++)
+            {
+                _board[i, j].SetActive(binsState);
+            }
+        }
+    }
 }

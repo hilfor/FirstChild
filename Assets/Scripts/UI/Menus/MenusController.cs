@@ -15,14 +15,17 @@ public class MenusController : MonoBehaviour
 {
     public BaseMenu[] _Menus;
 
+    public MenuTypes _defaultMenu = MenuTypes.MAIN_MENU;
+
     private Hashtable _menusTable;
     private BaseMenu _currentDisplayedMenu;
 
+
     private Stack _menusStack;
 
-    public void ShowMainMenu()
+    public void ShowDefaultMenu()
     {
-        _currentDisplayedMenu = (BaseMenu)_menusTable[MenuTypes.MAIN_MENU];
+        _currentDisplayedMenu = (BaseMenu)_menusTable[_defaultMenu];
         _currentDisplayedMenu.DisplayMenu();
     }
 
@@ -31,7 +34,7 @@ public class MenusController : MonoBehaviour
     public void Awake()
     {
         //base.Awake();
-        EventBus.ShowMainMenu.AddListener(ShowMainMenu);
+        EventBus.ShowMainMenu.AddListener(ShowDefaultMenu);
     }
 
     void Start()
@@ -42,7 +45,7 @@ public class MenusController : MonoBehaviour
         {
             _menusTable.Add(_Menus[i]._menuType, _Menus[i]);
         }
-        ShowMainMenu();
+        ShowDefaultMenu();
     }
 
     public void ChangeMenu(MenuTypes menuType)
