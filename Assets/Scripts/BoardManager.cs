@@ -3,6 +3,7 @@
 using System.Collections;
 using System;
 
+
 public class BoardManager : MonoBehaviour
 {
     public GameObject _Anchor;
@@ -47,9 +48,18 @@ public class BoardManager : MonoBehaviour
     }
     void LevelStarted()
     {
-        // init Bins only if this is a new game
+        //init boardSize and recreate bins only if it is a new game
         if (_objectState == State.NEW)
+        {
+            if (PlayerPrefs.HasKey("boardSizeX"))
+                _boardSizeX = PlayerPrefs.GetInt("boardSizeX");
+            if (PlayerPrefs.HasKey("boardSizeY"))
+                _boardSizeY = PlayerPrefs.GetInt("boardSizeY");
+            if (PlayerPrefs.HasKey("spawnTimer"))
+                _BombSpawnTimer = PlayerPrefs.GetFloat("spawnTimer");
+
             CreateBins();
+        }
         _levelInProgress = true;
 
         _objectState = State.DISPLAYED;

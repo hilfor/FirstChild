@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
-
+using System;
+[Serializable]
 public abstract class BaseMenu : MonoBehaviour
 {
-
+    
+    [SerializeField]
     public MenuTypes _menuType;
 
     public MenusController _MenusController;

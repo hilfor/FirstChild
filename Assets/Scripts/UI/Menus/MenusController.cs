@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 
 public enum MenuTypes
@@ -8,12 +9,15 @@ public enum MenuTypes
     START,
     CREDITS,
     QUIT,
-    PAUSE
+    SPASH,
+    PAUSE,
+    DIFFICULTY
 }
 
 public class MenusController : MonoBehaviour
 {
-    public BaseMenu[] _Menus;
+    //public List<BaseMenu> _Menus;
+    public  BaseMenu[] _Menus;
 
     public MenuTypes _defaultMenu = MenuTypes.MAIN_MENU;
 
