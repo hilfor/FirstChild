@@ -16,6 +16,7 @@ public class DifficultySelectMenu : BaseMenu
     public List<DifficultySetting> m_difficulties;
 
     private Transform _menuObjectTransform;
+    private bool _UiCreated = false;
 
     void Start()
     {
@@ -27,7 +28,11 @@ public class DifficultySelectMenu : BaseMenu
     public override void DisplayMenu()
     {
         m_MenuObject.SetActive(true);
-        CreateDifficultyButtons();
+        if (!_UiCreated)
+        {
+            CreateDifficultyButtons();
+            _UiCreated = true;
+        }
     }
 
     public override void HideMenu()
@@ -37,15 +42,16 @@ public class DifficultySelectMenu : BaseMenu
 
     private void CreateDifficultyButtons()
     {
-        Vector2 buttonPosition= m_DifficultyButtonsAncor.position;
+        Vector2 buttonPosition = m_DifficultyButtonsAncor.position;
 
 
         for (int i = 0; i < m_difficulties.Count; i++)
         {
             GameObject go = (GameObject)Instantiate(m_DifficultyButtonPrefab, buttonPosition, Quaternion.identity);
             buttonPosition.y -= 40;
-            go.transform.parent = _menuObjectTransform;
 
+            go.transform.SetParent(_menuObjectTransform, true);
+            go.transform.localScale = Vector3.one;
             DifficultyButton db = go.GetComponent<DifficultyButton>();
             db.Setting = m_difficulties[i];
             db._menu = this;
