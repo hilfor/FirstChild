@@ -6,6 +6,6 @@ public class CreditsButton : BaseButton
 {
     public override void ButtonPressed()
     {
-        _menu.ChangeMenu(MenuTypes.CREDITS);
+        _menu.ChangeMenu(MenuTypes.ABOUT);
     }
 }

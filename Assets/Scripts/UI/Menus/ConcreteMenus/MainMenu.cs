@@ -9,7 +9,7 @@ public class MainMenu : BaseMenu
 
     void Start()
     {
-        _menuType = MenuTypes.MAIN_MENU;
+        _menuType = MenuTypes.MAIN;
     }
 
     public override void DisplayMenu()

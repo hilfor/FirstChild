@@ -5,13 +5,15 @@ using System;
 
 public enum MenuTypes
 {
-    MAIN_MENU,
+    SPLASH,
+    MAIN,
     START,
-    CREDITS,
-    QUIT,
-    SPASH,
+    DIFFICULTY,
     PAUSE,
-    DIFFICULTY
+    GAMEOVER,
+    HOWTO,
+    ABOUT,
+    EXIT
 }
 
 public class MenusController : MonoBehaviour
@@ -19,7 +21,7 @@ public class MenusController : MonoBehaviour
     //public List<BaseMenu> _Menus;
     public  BaseMenu[] _Menus;
 
-    public MenuTypes _defaultMenu = MenuTypes.MAIN_MENU;
+    public MenuTypes _defaultMenu = MenuTypes.MAIN;
 
     private Hashtable _menusTable;
     private BaseMenu _currentDisplayedMenu;

@@ -8,7 +8,7 @@ public class CreditsMenu : BaseMenu {
 
     void Start()
     {
-        _menuType = MenuTypes.CREDITS;
+        _menuType = MenuTypes.ABOUT;
     }
 
     public override void DisplayMenu()
