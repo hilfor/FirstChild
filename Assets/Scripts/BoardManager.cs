@@ -26,16 +26,10 @@ public class BoardManager : MonoBehaviour
     ArrayList _freeBins;
     GameObject[,] _board;
 
-    //public override void Awake()
-    //{
-    //    base.Awake();
-    //    EventBus.BinCleared.AddListener(BinCleared);
-    //    EventBus.LevelStarted.AddListener(LevelStarted);
-    //}
-
     void Awake()
     {
         RegisterHandlers();
+        LevelStarted();
     }
 
     void RegisterHandlers()
@@ -106,20 +100,23 @@ public class BoardManager : MonoBehaviour
         if (Input.touchCount > 0)
         {
             _hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position), Vector3.forward, 100f);
-            Debug.DrawRay(Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position), Vector3.forward);
+            //Debug.DrawRay(Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position), Vector3.forward);
         }
         else
         {
             if (Input.GetMouseButtonDown(0))
             {
                 _hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.forward, 100f);
-                Debug.DrawRay(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.forward);
+                //Debug.DrawRay(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.forward);
             }
         }
 
         if (_hit.collider)
         {
-            _hit.collider.GetComponent<BinManager>().Bin_Onclick();
+            Debug.Log("Hit " + _hit.collider.tag);
+            if (_hit.collider.GetComponent<BinManager>())
+                _hit.collider.GetComponent<BinManager>().Bin_Onclick();
+
         }
     }
 

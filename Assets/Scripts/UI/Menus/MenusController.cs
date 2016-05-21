@@ -19,15 +19,15 @@ public enum MenuTypes
 public class MenusController : MonoBehaviour
 {
     //public List<BaseMenu> _Menus;
-    public  BaseMenu[] _Menus;
+    public BaseMenu[] _Menus;
 
     public MenuTypes _defaultMenu = MenuTypes.MAIN;
 
-    private Hashtable _menusTable;
+    private Hashtable _menusTable = new Hashtable();
     private BaseMenu _currentDisplayedMenu;
 
 
-    private Stack _menusStack;
+    private Stack _menusStack = new Stack();
 
     public void ShowDefaultMenu()
     {
@@ -35,29 +35,32 @@ public class MenusController : MonoBehaviour
         _currentDisplayedMenu.DisplayMenu();
     }
 
- 
+
 
     public void Awake()
     {
         //base.Awake();
-        EventBus.ShowMainMenu.AddListener(ShowDefaultMenu);
+        //EventBus.ShowMainMenu.AddListener(ShowDefaultMenu);
     }
 
     void Start()
     {
-        _menusStack = new Stack();
-        _menusTable = new Hashtable();
+        //_menusStack = new Stack();
+        //_menusTable = new Hashtable();
         for (int i = 0; i < _Menus.Length; i++)
         {
             _menusTable.Add(_Menus[i]._menuType, _Menus[i]);
         }
-        ShowDefaultMenu();
+        //ShowDefaultMenu();
     }
 
     public void ChangeMenu(MenuTypes menuType)
     {
-        _currentDisplayedMenu.HideMenu();
-        _menusStack.Push(_currentDisplayedMenu);
+        if (_currentDisplayedMenu)
+        {
+            _currentDisplayedMenu.HideMenu();
+            _menusStack.Push(_currentDisplayedMenu);
+        }
 
         _currentDisplayedMenu = (BaseMenu)_menusTable[menuType];
         _currentDisplayedMenu.DisplayMenu();
@@ -66,8 +69,11 @@ public class MenusController : MonoBehaviour
     public void BackButtonPressed()
     {
         _currentDisplayedMenu.HideMenu();
-        _currentDisplayedMenu= (BaseMenu)_menusStack.Pop();
-        _currentDisplayedMenu.DisplayMenu();
+        if (_menusStack.Count > 0)
+        {
+            _currentDisplayedMenu = (BaseMenu)_menusStack.Pop();
+            _currentDisplayedMenu.DisplayMenu();
+        }
 
     }
 

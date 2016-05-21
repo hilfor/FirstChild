@@ -10,11 +10,11 @@ public class BinManager : MonoBehaviour
     public GameObject _BabyBomb;
     public ScoreManager _ScoreManager;
 
-
     private GameObject _binBomb;
     private Hashtable _bombsTypeHash;
     private bool _empty = true;
     //private bool _destroySequenceActive = false;
+
     public bool IsEmpty
     {
         get
@@ -38,14 +38,17 @@ public class BinManager : MonoBehaviour
 
     public void CreateBomb()
     {
-        int randomBombType = Random.Range(0, sizeof(BombType) * 1000) % 3;
-        CreateBombByType((BombType)randomBombType);
-        _empty = false;
+        if (IsEmpty)
+        {
+            int randomBombType = Random.Range(0, sizeof(BombType) * 1000) % 3;
+            CreateBombByType((BombType)randomBombType);
+            _empty = false;
+        }
     }
 
     void CreateBombByType(BombType bombType)
     {
-        _binBomb = (GameObject)Instantiate((GameObject)_bombsTypeHash[bombType], transform.position, Quaternion.identity);
+        _binBomb = (GameObject)Instantiate((GameObject)_bombsTypeHash[bombType], transform.position - new Vector3(0, 0, 1), Quaternion.identity);
         _binBomb.transform.parent = transform;
         _binBomb.GetComponent<BombManager>()._ScoreManager = _ScoreManager;
     }
@@ -64,14 +67,6 @@ public class BinManager : MonoBehaviour
         BombManager bombManager = _binBomb.GetComponent<BombManager>();
         bombManager.Bomb_OnClick();
 
-        //GameObject bombDestroyAnimation = _binBomb.GetComponent<BombManager>()._BombDestroyAnimation;
-
-        //if (bombDestroyAnimation)
-        //{
-        //    Instantiate(bombDestroyAnimation, _binBomb.transform.position, Quaternion.identity);
-        //}
-
-        //Destroy(_binBomb);
         _empty = true;
         EventBus.BinCleared.Dispatch(gameObject);
 
