@@ -8,12 +8,14 @@ public class LifeManager : MonoBehaviour
     //public GameObject _LifePrefab;
     //[Header("Done set the above prefab")]
     public GameObject _LifeObject;
+    public GameObject _LifeLayoutParent;
+    public GameObject _LifeSprite;
 
     public int _MaxLife = 3;
 
     private bool _hidden = false;
 
-    private Text _lifeText;
+    //private Text _lifeText;
     private int _currentLife;
 
     public void DecreaseLife()
@@ -30,7 +32,8 @@ public class LifeManager : MonoBehaviour
 
     void Start()
     {
-        _lifeText = _LifeObject.GetComponent<Text>();
+        //_lifeText = _LifeObject.GetComponent<Text>();
+
         GameStarted();
     }
 
@@ -38,7 +41,7 @@ public class LifeManager : MonoBehaviour
     {
         if (!_hidden)
         {
-            _lifeText.text = _currentLife.ToString();
+            //_lifeText.text = _currentLife.ToString();
             if (_currentLife == 0)
                 EventBus.GameOver.Dispatch();
         }
@@ -56,6 +59,12 @@ public class LifeManager : MonoBehaviour
 
     void GameStarted()
     {
+        for (int i = 0; i < _MaxLife; i++)
+        {
+            GameObject go = (GameObject)Instantiate(_LifeSprite, _LifeLayoutParent.transform.position, Quaternion.identity);
+            go.transform.parent = _LifeLayoutParent.transform;
+            go.transform.localScale = Vector3.one;
+        }
         _currentLife = _MaxLife;
         _hidden = false;
         DisplayObjects();
