@@ -20,9 +20,9 @@ public abstract class BombManager : MonoBehaviour
 {
     public BombType _BombType;
     public BombStatus _BombStatus;
-    //public GameObject _BombPrefab;
     public GameObject _BombDestroyAnimation;
     public ScoreManager _ScoreManager;
+    public LifeManager _LifeManager;
     public int _Score;
     public float _TimeToLive = 0f;
 
@@ -48,19 +48,11 @@ public abstract class BombManager : MonoBehaviour
             Instantiate(_BombDestroyAnimation, transform.position, Quaternion.identity);
     }
 
-    public void UpdateScore(int score)
-    {
-        _ScoreManager.UpdateScore(score);
+    public abstract void UpdateScore(int score);
 
-    }
+    public abstract void OnBombTimerDone();
+    
 
-    public void OnBombTimerDone()
-    {
-        if (_Animator)
-            _Animator.SetTrigger("TimedOut");
-        UpdateScore(-_Score);
-        //HideBomb();
-    }
 
     void Start()
     {
@@ -75,10 +67,10 @@ public abstract class BombManager : MonoBehaviour
 
     public void Bomb_OnClick()
     {
-        Debug.Log("bomb clicked");
+        StopTimer();
         DeployBombExplosion();
         UpdateScore(_Score);
-        HideBomb();
+        //HideBomb();
     }
 
     IEnumerator BombTimer()
