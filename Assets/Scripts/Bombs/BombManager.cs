@@ -30,6 +30,8 @@ public abstract class BombManager : MonoBehaviour
 
     protected Coroutine _BombTimer;
 
+    public Animator _Animator;
+
     public abstract BombType GetBombType();
     public abstract void ShowBomb();
 
@@ -40,6 +42,8 @@ public abstract class BombManager : MonoBehaviour
 
     public void DeployBombExplosion()
     {
+        if (_Animator)
+            _Animator.SetTrigger("Hit");
         if (_BombDestroyAnimation)
             Instantiate(_BombDestroyAnimation, transform.position, Quaternion.identity);
     }
@@ -52,13 +56,16 @@ public abstract class BombManager : MonoBehaviour
 
     public void OnBombTimerDone()
     {
+        if (_Animator)
+            _Animator.SetTrigger("TimedOut");
         UpdateScore(-_Score);
-        HideBomb();
+        //HideBomb();
     }
 
     void Start()
     {
         _BombTimer = StartCoroutine("BombTimer");
+        _Animator = GetComponent<Animator>();
     }
 
     protected void StopTimer()
@@ -69,9 +76,9 @@ public abstract class BombManager : MonoBehaviour
     public void Bomb_OnClick()
     {
         Debug.Log("bomb clicked");
-        HideBomb();
         DeployBombExplosion();
         UpdateScore(_Score);
+        HideBomb();
     }
 
     IEnumerator BombTimer()

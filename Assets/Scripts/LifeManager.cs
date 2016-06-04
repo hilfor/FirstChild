@@ -62,7 +62,7 @@ public class LifeManager : MonoBehaviour
         for (int i = 0; i < _MaxLife; i++)
         {
             GameObject go = (GameObject)Instantiate(_LifeSprite, _LifeLayoutParent.transform.position, Quaternion.identity);
-            go.transform.parent = _LifeLayoutParent.transform;
+            go.transform.SetParent(_LifeLayoutParent.transform);
             go.transform.localScale = Vector3.one;
         }
         _currentLife = _MaxLife;
