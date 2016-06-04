@@ -1,12 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class LifeManager : MonoBehaviour
 {
-
-    //public GameObject _LifePrefab;
-    //[Header("Done set the above prefab")]
     public GameObject _LifeObject;
     public GameObject _LifeLayoutParent;
     public GameObject _LifeSprite;
@@ -15,11 +13,13 @@ public class LifeManager : MonoBehaviour
 
     private bool _hidden = false;
 
-    //private Text _lifeText;
     private int _currentLife;
+    private List<GameObject> _heartsList;
+
 
     public void DecreaseLife()
     {
+        _heartsList[_currentLife - 1].GetComponent<Animator>().SetTrigger("Hide");
         _currentLife -= 1;
     }
 
@@ -32,8 +32,7 @@ public class LifeManager : MonoBehaviour
 
     void Start()
     {
-        //_lifeText = _LifeObject.GetComponent<Text>();
-
+        _heartsList = new List<GameObject>();
         GameStarted();
     }
 
@@ -41,7 +40,6 @@ public class LifeManager : MonoBehaviour
     {
         if (!_hidden)
         {
-            //_lifeText.text = _currentLife.ToString();
             if (_currentLife == 0)
                 EventBus.GameOver.Dispatch();
         }
@@ -49,7 +47,13 @@ public class LifeManager : MonoBehaviour
 
     void GameRestarted()
     {
-        GameStarted();
+        DisplayObjects();
+        for (int i = 0; i < _heartsList.Count; i++)
+        {
+            _heartsList[i].GetComponent<Animator>().SetTrigger("restart");
+        }
+        _currentLife = _MaxLife;
+        _hidden = false;
     }
 
     void GamePaused()
@@ -61,9 +65,10 @@ public class LifeManager : MonoBehaviour
     {
         for (int i = 0; i < _MaxLife; i++)
         {
-            GameObject go = (GameObject)Instantiate(_LifeSprite, _LifeLayoutParent.transform.position, Quaternion.identity);
-            go.transform.SetParent(_LifeLayoutParent.transform);
-            go.transform.localScale = Vector3.one;
+            GameObject heart = (GameObject)Instantiate(_LifeSprite, _LifeLayoutParent.transform.position, Quaternion.identity);
+            heart.transform.SetParent(_LifeLayoutParent.transform);
+            heart.transform.localScale = Vector3.one;
+            _heartsList.Add(heart);
         }
         _currentLife = _MaxLife;
         _hidden = false;
@@ -77,11 +82,13 @@ public class LifeManager : MonoBehaviour
 
     void HideObjects()
     {
+        _hidden = true;
         _LifeObject.SetActive(false);
     }
 
     void DisplayObjects()
     {
+        _hidden = false;
         _LifeObject.SetActive(true);
     }
 
