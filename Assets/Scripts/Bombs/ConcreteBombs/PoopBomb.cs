@@ -2,6 +2,11 @@
 
 public class PoopBomb : BombManager
 {
+    public override void BombClicked()
+    {
+        UpdateScore(_Score);
+    }
+
     public override BombType GetBombType()
     {
         return BombType.POOP;

@@ -7,7 +7,8 @@ public class BinManager : MonoBehaviour
     //public GameObject[] _BombsPrefabList;
     public GameObject _PeeBomb;
     public GameObject _PoopBomb;
-    public GameObject _BabyBomb;
+    public GameObject _BabyBoyBomb;
+    public GameObject _BabyGirlBomb;
     public ScoreManager _ScoreManager;
     public LifeManager _LifeManager;
 
@@ -34,14 +35,15 @@ public class BinManager : MonoBehaviour
         _bombsTypeHash = new Hashtable();
         _bombsTypeHash.Add(BombType.PEE, _PeeBomb);
         _bombsTypeHash.Add(BombType.POOP, _PoopBomb);
-        _bombsTypeHash.Add(BombType.BABY, _BabyBomb);
+        _bombsTypeHash.Add(BombType.BABY_BOY, _BabyBoyBomb);
+        _bombsTypeHash.Add(BombType.BABY_GIRL, _BabyGirlBomb);
     }
 
     public void CreateBomb()
     {
         if (IsEmpty)
         {
-            int randomBombType = Random.Range(0, sizeof(BombType) * 1000) % 3;
+            int randomBombType = Random.Range(0, sizeof(BombType) * 1000) % 4;
             CreateBombByType((BombType)randomBombType);
             _empty = false;
         }

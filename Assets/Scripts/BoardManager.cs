@@ -114,7 +114,6 @@ public class BoardManager : MonoBehaviour
 
         if (_hit.collider)
         {
-            Debug.Log("Hit " + _hit.collider.tag);
             if (_hit.collider.GetComponent<BinManager>())
                 _hit.collider.GetComponent<BinManager>().Bin_Onclick();
 

@@ -19,8 +19,11 @@ public class LifeManager : MonoBehaviour
 
     public void DecreaseLife()
     {
-        _heartsList[_currentLife - 1].GetComponent<Animator>().SetTrigger("Hide");
-        _currentLife -= 1;
+        if (_currentLife > 0)
+        {
+            _heartsList[_currentLife - 1].GetComponent<Animator>().SetTrigger("Hide");
+            _currentLife -= 1;
+        }
     }
 
     void Awake()
@@ -41,7 +44,10 @@ public class LifeManager : MonoBehaviour
         if (!_hidden)
         {
             if (_currentLife == 0)
+            {
+                Debug.Log("GameOver");
                 EventBus.GameOver.Dispatch();
+            }
         }
     }
 

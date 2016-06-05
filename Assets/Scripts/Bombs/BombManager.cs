@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public enum BombType
 {
     PEE,
     POOP,
-    BABY
+    BABY_BOY,
+    BABY_GIRL
 }
 
 public enum BombStatus
@@ -47,13 +49,23 @@ public abstract class BombManager : MonoBehaviour
     public abstract void UpdateScore(int score);
 
     public abstract void OnBombTimerDone();
-    
-
-
+    public abstract void BombClicked();
     void Start()
     {
         _BombTimer = StartCoroutine("BombTimer");
-        _Animator = GetComponent<Animator>();
+        _Animator = GetComponentInChildren<Animator>();
+        EventBus.LevelPaused.AddListener(LevelPaused);
+        EventBus.LevelUnPaused.AddListener(LevelUnPaused);
+    }
+
+    private void LevelUnPaused()
+    {
+        _BombTimer = StartCoroutine("BombTimer");
+    }
+
+    private void LevelPaused()
+    {
+        StopCoroutine(_BombTimer);
     }
 
     protected void StopTimer()
@@ -65,13 +77,16 @@ public abstract class BombManager : MonoBehaviour
     {
         StopTimer();
         DeployBombExplosion();
-        UpdateScore(_Score);
-        //HideBomb();
+        BombClicked();
     }
 
     IEnumerator BombTimer()
     {
-        yield return new WaitForSeconds(_TimeToLive);
+        while (_TimeToLive > 0)
+        {
+            yield return new WaitForEndOfFrame();
+            _TimeToLive -= Time.deltaTime;
+        }
         OnBombTimerDone();
     }
 

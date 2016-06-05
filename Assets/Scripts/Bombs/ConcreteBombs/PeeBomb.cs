@@ -4,6 +4,11 @@ using System;
 
 public class PeeBomb : BombManager
 {
+    public override void BombClicked()
+    {
+        UpdateScore(_Score);
+    }
+
     public override BombType GetBombType()
     {
         return BombType.PEE;
