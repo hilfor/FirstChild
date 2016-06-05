@@ -35,10 +35,6 @@ public abstract class BombManager : MonoBehaviour
     public abstract BombType GetBombType();
     public abstract void ShowBomb();
 
-    public void HideBomb()
-    {
-        Destroy(gameObject);
-    }
 
     public void DeployBombExplosion()
     {

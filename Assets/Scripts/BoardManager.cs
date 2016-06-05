@@ -9,6 +9,7 @@ public class BoardManager : MonoBehaviour
     public GameObject _Anchor;
     public GameObject _BinPrefab;
     public ScoreManager _ScoreManager;
+    public LifeManager _LifeManager;
     public float _DeltaX;
     public float _DeltaY;
 
@@ -139,6 +140,7 @@ public class BoardManager : MonoBehaviour
     void SetBinMembers(BinManager bin)
     {
         bin._ScoreManager = _ScoreManager;
+        bin._LifeManager = _LifeManager;
     }
 
     IEnumerator BombSpawner()

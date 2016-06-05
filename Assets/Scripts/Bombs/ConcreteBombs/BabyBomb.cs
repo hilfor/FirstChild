@@ -15,7 +15,6 @@ public class BabyBomb : BombManager
         if (_Animator)
             _Animator.SetTrigger("TimedOut");
         UpdateScore(-_Score);
-        //HideBomb();
     }
 
     public override void ShowBomb()
@@ -28,3 +27,4 @@ public class BabyBomb : BombManager
         _ScoreManager.UpdateScore(score);
     }
 }
+

@@ -9,6 +9,7 @@ public class BinManager : MonoBehaviour
     public GameObject _PoopBomb;
     public GameObject _BabyBomb;
     public ScoreManager _ScoreManager;
+    public LifeManager _LifeManager;
 
     private GameObject _binBomb;
     private Hashtable _bombsTypeHash;
@@ -51,6 +52,7 @@ public class BinManager : MonoBehaviour
         _binBomb = (GameObject)Instantiate((GameObject)_bombsTypeHash[bombType], transform.position - new Vector3(0, 0, 1), Quaternion.identity);
         _binBomb.transform.parent = transform;
         _binBomb.GetComponent<BombManager>()._ScoreManager = _ScoreManager;
+        _binBomb.GetComponent<BombManager>()._LifeManager = _LifeManager;
     }
 
 
