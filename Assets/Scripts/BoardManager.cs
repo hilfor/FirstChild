@@ -6,6 +6,9 @@ using System;
 
 public class BoardManager : MonoBehaviour
 {
+    [SerializeField]
+    public static float DifficultyLevel = 0;
+
     public GameObject _Anchor;
     public GameObject _BinPrefab;
     public ScoreManager _ScoreManager;
@@ -20,6 +23,12 @@ public class BoardManager : MonoBehaviour
 
     public State _objectState = State.NEW;
 
+    public AnimationCurve _DifficultyCurve;
+
+    private float _CurrentDifficultyRangeIndex = 0;
+    [SerializeField]
+    private float _DifficultyUpdateTick = 10f;
+    private float _DifficultyUpdateSum = 0;
     private bool _levelInProgress = false;
 
     private Coroutine _spawnerCoroutine = null;
@@ -118,6 +127,20 @@ public class BoardManager : MonoBehaviour
                 _hit.collider.GetComponent<BinManager>().Bin_Onclick();
 
         }
+
+    }
+
+    void FixedUpdate()
+    {
+
+        _DifficultyUpdateSum += Time.fixedDeltaTime;
+        if (_DifficultyUpdateSum >= _DifficultyUpdateTick)
+        {
+
+            _DifficultyUpdateSum = 0;
+            _CurrentDifficultyRangeIndex += 0.05f;
+            BoardManager.DifficultyLevel += BoardManager.DifficultyLevel * _DifficultyCurve.Evaluate(_CurrentDifficultyRangeIndex);
+        }
     }
 
     void CreateBins()
@@ -157,7 +180,7 @@ public class BoardManager : MonoBehaviour
                 }
             }
 
-            yield return new WaitForSeconds(_BombSpawnTimer);
+            yield return new WaitForSeconds(_BombSpawnTimer/BoardManager.DifficultyLevel);
         }
     }
 

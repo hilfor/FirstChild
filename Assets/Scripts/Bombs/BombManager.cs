@@ -26,8 +26,9 @@ public abstract class BombManager : MonoBehaviour
     public ScoreManager _ScoreManager;
     public LifeManager _LifeManager;
     public int _Score;
-    public float _TimeToLive = 0f;
+    public float _TimeToLive = 0;
 
+    protected float _TimeToLiveCounter = 0;
     protected GameObject _bombObject;
 
     protected Coroutine _BombTimer;
@@ -82,10 +83,10 @@ public abstract class BombManager : MonoBehaviour
 
     IEnumerator BombTimer()
     {
-        while (_TimeToLive > 0)
+        while (_TimeToLiveCounter <= _TimeToLive / BoardManager.DifficultyLevel)
         {
             yield return new WaitForEndOfFrame();
-            _TimeToLive -= Time.deltaTime;
+            _TimeToLiveCounter += Time.deltaTime;
         }
         OnBombTimerDone();
     }
